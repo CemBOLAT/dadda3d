@@ -42,7 +42,54 @@ Debian ve Rocky için ayrı ayrı iki farklı dökümantasyon vardır.
 > [!IMPORTANT]
 > Burada root ve kullanıcı için şifre girmeye özen gösterin çünkü bazı sistemlerde root şifresiz olunca mysql açılmıyor.
 
+- - ```CREATE DATABASE db_name; # Databse oluşturmak için ```
+* User oluşturmak ve şifre ataması yapmak için burada da şifre vermeyi unutmayın.
+- -  ```CREATE USER 'db_user'@'localhost' IDENTIFIED BY 'db_password';```
+* Kullanıcıya ayrıcalık tanıyıp databaseyi kullanmasını sağlıyoruz.
+- - ```GRANT ALL PRIVILEGES ON db_name.* TO 'db_user'@localhost; ```
+* Ayrıcalıkları güncelliyoruz.
+- - ```FLUSH PRIVILEGES;```
+- - ``` EXIT ```
 
+4. Wordpressi wget kullanarak /var/www/ klasötrü içine kuruyoruz.
+* ```cd /var/www/ ; wget https://wordpress.org/latest.tar.gz ```
+* /var/www/ klasörü içine düzenli gözükmesi açısından sitemizin adında klasör ekliyoruz.
+* - ```mkdir wp_first```;
+* Arşiv dosyasını açıyoruz ve içindekileri wp_first klasörünün içine taşıyoruz.
+* - ``` tar xf latest.tar.gz; mv ./wordpress/* ./wp_first/ ```
+* Oluşturduğumuz klasöre ve içindeki dosyalara web servisi sahipliği atıyoruz (apache).
+* - ```chown -R apache: ./wp_first/ ```
+* /etc/httpd/conf.d/vhost_domain.com.conf komundaki dosyayının içine aşağıdaki texti yazıyoruz.
+```
+<VirtualHost *:80>
+    ServerName www.wp_first
+    DocumentRoot /var/www/wp_first
+    <Directory /var/www/wp_first>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+* apachede sorun olup olmadığını kontrol etmek için
+* - ```apachectl -t```
+* /etc/hosts dosyası içine girip ip adresimize sitemizi yönlendiriyoruz.
+* Son olarak aşağıdaki komutu kullanıp dosyanın içine girdikten sonra database bilgilerimizi tabloya ekliyince wordpress ile oluşan site çalışmaya başlayacak.
+* - ``` mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php ```
+```
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'db_name' );
+
+/** Database username */
+define( 'DB_USER', 'db_user' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'db_password' );
+
+/** Database hostname */
+define( 'DB_HOST', 'localhost' );
+```
+* Servisleri yeniden başlatıyoruz ve sitemiz çalışmaya hazır.
 
 
 

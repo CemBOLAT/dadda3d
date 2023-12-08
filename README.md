@@ -1,6 +1,8 @@
 
 # ROCKY VE DEBIAN DAĞITIMLARINDA WORDPRESS KURULUMU
 
+https://excalidraw.com/#json=z5uH3I-F33IvvfWX6roYp,c29-SACHHQkZQwPLNPcpJA
+
 Bu Dökümantasyon debian ve rocky dağıtımlarında wordpress kurulumunu açıklar.
 Debian ve Rocky için ayrı ayrı iki farklı dökümantasyon vardır.
 
